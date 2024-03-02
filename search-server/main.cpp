@@ -68,10 +68,10 @@ public:
 
     void AddDocument(int document_id, const string& document) {
         const vector<string> words = SplitIntoWordsNoStop(document);
-        
-        for (const string& word : words)  {
-            if (!stop_words_.count(word)) { 
-                word_to_document_freqs_[word][document_id] += 1.0/ words.size();
+
+        for (const string& word : words) {
+            if (!stop_words_.count(word)) {
+                word_to_document_freqs_[word][document_id] += 1.0 / words.size();
             }
         }
 
@@ -95,7 +95,7 @@ private:
 
 
 
-    map<string, map<int, double>> word_to_document_freqs_; 
+    map<string, map<int, double>> word_to_document_freqs_;
     // word id freq id freq id freq...
 
 
@@ -151,11 +151,11 @@ private:
 
         for (const auto& [word, id_rel] : result_docs_freq) {
             double IDF = log(static_cast<double> (document_count_) / static_cast<double> (word_to_document_freqs_.at(word).size()));
-            
+
             for (const auto& [id, rel] : id_rel) {
-                    id_REL[id] += rel * IDF;
+                id_REL[id] += rel * IDF;
             }
-      
+
         }
 
         for (const auto& doc : id_REL) {
