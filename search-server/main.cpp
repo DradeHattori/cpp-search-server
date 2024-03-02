@@ -24,6 +24,11 @@ int ReadLineWithNumber() {
     return result;
 }
 
+double GetIDF(const int& word_count, const int& base_size) {
+    return log(static_cast<double> (word_count) / static_cast<double>(base_size));
+}
+
+
 vector<string> SplitIntoWords(const string& text) {
     vector<string> words;
     string word;
@@ -131,10 +136,14 @@ private:
         return groupedwords;
     }
 
+
+
+
     vector<Document> FindAllDocuments(const Query& query_words) const {
         vector<Document> matched_documents;
-        map<int, double> id_REL;
+        map<int, double> id_to_relevance;
         map<string, map<int, double>> result_docs_freq;
+
 
 
         for (const string& word : query_words.pluswords) {
@@ -149,16 +158,19 @@ private:
         }
 
 
+
+
         for (const auto& [word, id_rel] : result_docs_freq) {
-            double IDF = log(static_cast<double> (document_count_) / static_cast<double> (word_to_document_freqs_.at(word).size()));
+            int base_size_ = word_to_document_freqs_.at(word).size();
+            const double IDF = GetIDF(document_count_, base_size_);
 
             for (const auto& [id, rel] : id_rel) {
-                id_REL[id] += rel * IDF;
+                id_to_relevance[id] += rel * IDF;
             }
 
         }
 
-        for (const auto& doc : id_REL) {
+        for (const auto& doc : id_to_relevance) {
             matched_documents.push_back({ doc.first, doc.second });
         }
 
