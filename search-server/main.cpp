@@ -98,9 +98,6 @@ public:
         : SearchServer(
             SplitIntoWords(stop_words_text))  // Invoke delegating constructor from string container
     {
-        if (!IsValidContainer(stop_words_)) {
-            throw invalid_argument("Invalid stopwords");
-        }
     }
 
     void AddDocument(int document_id, const string& document, DocumentStatus status,
